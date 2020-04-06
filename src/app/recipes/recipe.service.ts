@@ -32,10 +32,10 @@ export class RecipeService {
   }
 
   getRecipe(index: number) {
-    return this.recipes[index];
+    return this.recipes[index]; //get the recipe with index position
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.slService.addIngredients(ingredients);
+    this.slService.addIngredients(ingredients); //add ingredients into shopping-list.service
   }
 }
