@@ -26,7 +26,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onEditItem(index: number) {
-    this.slService.startEdit.next(index); 
+    this.slService.startEdit.next(index); //push index into starEdit subject in shopping-list.service
   }
 
   ngOnDestroy(): void {
