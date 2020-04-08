@@ -1,57 +1,91 @@
 import {
   Component,
   OnInit,
+  OnChanges,
   OnDestroy,
-  ViewChild
-} from '@angular/core';
+  SimpleChange,
+} from "@angular/core";
 
-import { Ingredient } from '../../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
-import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Ingredient } from "../../shared/ingredient.model";
+import { ShoppingListService } from "../shopping-list.service";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+} from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'app-shopping-edit',
-  templateUrl: './shopping-edit.component.html',
-  styleUrls: ['./shopping-edit.component.css']
+  selector: "app-shopping-edit",
+  templateUrl: "./shopping-edit.component.html",
+  styleUrls: ["./shopping-edit.component.css"],
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
-  @ViewChild('f') slForm: NgForm;
+  // @ViewChild('f') slForm: NgForm;
   subscription: Subscription;
   editMode = false;
   editedItemIndex: number;
   editedItem: Ingredient;
+  editName: string;
+  editAmount: number;
+  // editForm = new FormGroup({
+  //   name: new FormControl(this.editName, Validators.required),
+  //   amount: new FormControl(this.editAmount, [
+  //     Validators.required,
+  //     Validators.pattern(/^[1-9]+[0-9]*$/),
+  //   ]),
+  // });
 
-  constructor(private slService: ShoppingListService) { }
+  editForm: FormGroup;
+
+  constructor(
+    private slService: ShoppingListService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
-    this.subscription = this.slService.startEdit.subscribe(
-      (index: number) => {
-        this.editedItemIndex = index; //pass index value from startEdit Subject in Shopping-list.service into this.editedItemIndex
-        this.editMode = true;
-        this.editedItem = this.slService.getIngredient(index); 
-        this.slForm.setValue({
-          name: this.editedItem.name,
-          amount: this.editedItem.amount
-        })
-      }
-    )
+    this.editForm = this.createEditForm();
+    this.subscription = this.slService.startEdit.subscribe((index: number) => {
+      this.editedItemIndex = index; //pass index value from startEdit Subject in Shopping-list.service into this.editedItemIndex
+      this.editMode = true; //turn editMode on
+
+      this.editedItem = this.slService.getIngredient(index); //pass shopping-list.service's ingredients[index] value into this.editedItem
+      // this.editForm.get("name").setValue(this.editedItem.name);
+      // this.editForm.get("amount").setValue(this.editedItem.amount);
+    });
   }
 
-  onAddItem(form: NgForm) {
-    const value = form.value;
-    const newIngredient = new Ingredient(value.name, value.amount);
-    if (this.editMode) {
-      this.slService.updateIngredient(this.editedItemIndex, newIngredient);
-    } else {
-      this.slService.addIngredient(newIngredient); 
-    }
-    this.editMode = false;
-    form.reset();
+  // ngOnChanges(changes: SimpleChange) {
+  //   this.editForm.get("name").valueChanges.subscribe((data) => {
+  //     this.editName = data;
+  //     this.editForm.get("name").setValue(this.editName);
+  //   });
+  //   this.editForm.get("amount").valueChanges.subscribe((data) => {
+  //     this.editAmount = data;
+  //     this.editForm.get("amount").setValue(this.editAmount);
+  //   });
+  //   console.log(this.editForm.value);
+  // }
+
+  onSubmit() {
+    debugger;
+    // const newIngredient = new Ingredient(this.editName, this.editAmount);
+
+    // console.log(this.editForm.value);
+
+    // if (this.editMode) {
+    //   this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+    // } else {
+    //   this.slService.addIngredient(newIngredient);
+    // }
+    // this.editMode = false;
   }
 
   onClear() {
-    this.slForm.reset();
+    this.editForm.reset();
+    console.log("hi");
+
     this.editMode = false;
   }
 
@@ -62,5 +96,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  createEditForm(): FormGroup {
+    return this.fb.group({
+      name: [""],
+      amount: [""],
+    });
   }
 }

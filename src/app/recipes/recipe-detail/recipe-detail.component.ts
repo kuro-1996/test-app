@@ -21,21 +21,21 @@ export class RecipeDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params["id"];
-      this.recipe = this.recipeService.getRecipe(this.id);
+      this.id = +params["id"]; //get the id from route.params
+      this.recipe = this.recipeService.getRecipe(this.id); // pass data of recipe[this.id] in recipeService into this.recipe
     });
   }
 
   onAddToShoppingList() {
-    this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+    this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients); //add ingredient of this.recipe into shopping-list
   }
 
   onEditRecipe() {
-    this.router.navigate(["edit"], { relativeTo: this.route });
+    this.router.navigate(["edit"], { relativeTo: this.route }); //navigate to recipe-edit.component
   }
 
   onDeleteRecipe() {
-    this.recipeService.deleteRecipe(this.id);
-    this.router.navigate(["/recipes"]);
+    this.recipeService.deleteRecipe(this.id); //delete recipe[this.id] in recipeService
+    this.router.navigate(["/recipes"]); //navigate to recipes.component
   }
 }

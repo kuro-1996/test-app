@@ -30,29 +30,29 @@ export class RecipeService {
   constructor(private slService: ShoppingListService) {}
 
   getRecipes() {
-    return this.recipes.slice();
+    return this.recipes.slice(); //return the copy of recipes
   }
 
   getRecipe(index: number) {
-    return this.recipes[index];
+    return this.recipes[index]; //return the recipes[index]
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.slService.addIngredients(ingredients);
+    this.slService.addIngredients(ingredients); // add ingredients into shopping-list.service
   }
 
   addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
+    this.recipes.push(recipe); //push recipe into this.recipes
     this.recipesChanged.next(this.recipes.slice());
   }
 
   updateRecipe(index: number, newRecipe: Recipe) {
-    this.recipes[index] = newRecipe;
+    this.recipes[index] = newRecipe; //replace this.recipes[index] by newRecipe
     this.recipesChanged.next(this.recipes.slice());
   }
 
   deleteRecipe(index: number) {
-    this.recipes.splice(index, 1);
+    this.recipes.splice(index, 1); //remove recipe[index] out of recipes
     this.recipesChanged.next(this.recipes.slice());
   }
 }
