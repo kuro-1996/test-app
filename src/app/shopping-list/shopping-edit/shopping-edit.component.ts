@@ -1,16 +1,13 @@
 import {
   Component,
   OnInit,
-  OnChanges,
-  OnDestroy,
-  SimpleChange,
+  OnDestroy 
 } from "@angular/core";
 
 import { Ingredient } from "../../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list.service";
 import {
   FormGroup,
-  FormControl,
   Validators,
   FormBuilder,
 } from "@angular/forms";
@@ -22,21 +19,10 @@ import { Subscription } from "rxjs";
   styleUrls: ["./shopping-edit.component.css"],
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
-  // @ViewChild('f') slForm: NgForm;
   subscription: Subscription;
   editMode = false;
   editedItemIndex: number;
   editedItem: Ingredient;
-  editName: string;
-  editAmount: number;
-  // editForm = new FormGroup({
-  //   name: new FormControl(this.editName, Validators.required),
-  //   amount: new FormControl(this.editAmount, [
-  //     Validators.required,
-  //     Validators.pattern(/^[1-9]+[0-9]*$/),
-  //   ]),
-  // });
-
   editForm: FormGroup;
 
   constructor(
@@ -51,41 +37,26 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       this.editMode = true; //turn editMode on
 
       this.editedItem = this.slService.getIngredient(index); //pass shopping-list.service's ingredients[index] value into this.editedItem
-      // this.editForm.get("name").setValue(this.editedItem.name);
-      // this.editForm.get("amount").setValue(this.editedItem.amount);
+      this.editForm.get('name').setValue(this.editedItem.name);
+      this.editForm.get('amount').setValue(this.editedItem.amount)
     });
   }
 
-  // ngOnChanges(changes: SimpleChange) {
-  //   this.editForm.get("name").valueChanges.subscribe((data) => {
-  //     this.editName = data;
-  //     this.editForm.get("name").setValue(this.editName);
-  //   });
-  //   this.editForm.get("amount").valueChanges.subscribe((data) => {
-  //     this.editAmount = data;
-  //     this.editForm.get("amount").setValue(this.editAmount);
-  //   });
-  //   console.log(this.editForm.value);
-  // }
-
   onSubmit() {
-    debugger;
-    // const newIngredient = new Ingredient(this.editName, this.editAmount);
+    const newIngredient = new Ingredient(
+      this.editForm.controls['name'].value,
+      this.editForm.controls['amount'].value);
 
-    // console.log(this.editForm.value);
-
-    // if (this.editMode) {
-    //   this.slService.updateIngredient(this.editedItemIndex, newIngredient);
-    // } else {
-    //   this.slService.addIngredient(newIngredient);
-    // }
-    // this.editMode = false;
+    if (this.editMode) {
+      this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+    } else {
+      this.slService.addIngredient(newIngredient);
+    }
+    this.editMode = false;
   }
 
   onClear() {
     this.editForm.reset();
-    console.log("hi");
-
     this.editMode = false;
   }
 
@@ -100,8 +71,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   createEditForm(): FormGroup {
     return this.fb.group({
-      name: [""],
-      amount: [""],
+      name: ["",[Validators.required]],
+      amount: ["",[Validators.required,Validators.pattern(/^[1-9]+[0-9]*$/)]],
     });
   }
 }
