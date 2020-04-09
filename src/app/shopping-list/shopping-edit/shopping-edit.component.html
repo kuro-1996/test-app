@@ -11,6 +11,7 @@
             formControlName="name"
             required
           />
+          <span *ngIf="!editForm.get('name').valid && editForm.get('name').touched" class="form-text text-muted">Please fill the input</span>
         </div>
         <div class="col-sm-2 form-group">
           <label for="amount">Amount</label>
@@ -21,6 +22,7 @@
             formControlName="amount"
             required
           />
+          <span *ngIf="!editForm.get('amount').valid && editForm.get('amount').touched" class="form-text text-muted">Please fill the input</span>
         </div>
       </div>
       <div class="row">
