@@ -74,7 +74,7 @@
           >
             <div class="col-xs-8">
               <input type="text" class="form-control" formControlName="name" />
-              <span *ngIf="!recipeForm.get('ingredients').valid && recipeForm.get('ingredients').get('name').touched" class="form-text text-muted">Please fill the input</span>
+              <span *ngIf="!ingredientControl.get('name').valid && ingredientControl.get('name').touched" class="form-text text-muted">Please fill the input</span>
             </div>
             <div class="col-xs-2">
               <input
@@ -82,7 +82,7 @@
                 class="form-control"
                 formControlName="amount"
               />
-              <span *ngIf="!recipeForm.get('ingredients').get('amount').valid && recipeForm.get('ingredients').get('amount').touched" class="form-text text-muted">Please fill the input</span>
+              <span *ngIf="!ingredientControl.get('amount').valid && ingredientControl.get('amount').touched" class="form-text text-muted">Please fill the input</span>
             </div>
             <div class="col-xs-2">
               <button
