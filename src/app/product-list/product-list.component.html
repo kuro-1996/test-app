@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-sm-12" style="display: flex; flex-flow: wrap; justify-content: space-between;">
+    <p *ngIf="isFetching">Loading...</p>
+    <div class="card" *ngFor="let product of products; let i=index">
+      <img [src]="product.image" alt="product image" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.createdAt | date }}</p>
+        <p class="card-text">price: {{ product.price }} $</p>
+        <button class="btn btn-primary" (click)="onAddToCart(i)">Add to cart</button>
+      </div>
+    </div>
+  </div>
+</div>

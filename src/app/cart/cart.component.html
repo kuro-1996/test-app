@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3 *ngIf="sum === 0">Nothing in cart</h3>
+    <div class="card" *ngFor="let productCart of productCarts; let i=index">
+      <img [src]="productCart.image" alt="product image" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{ productCart.name }}</h5>
+        <p class="card-text">{{ productCart.createdAt | date }}</p>
+        <p class="card-text">price: {{ productCart.price }} $</p>
+        <button (click)="onMinus(i)">-</button>
+        <input type="number" value="1" (change)="onChange(i)">
+        <button (click)="onPlus(i)">+</button>
+        <button class="btn btn-danger" (click)="onDelete(i)">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <hr>
+    <h4>total price : {{ sum }} $</h4>
+  </div>
+</div>

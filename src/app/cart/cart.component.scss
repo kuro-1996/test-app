@@ -1,0 +1,23 @@
+.card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  img {
+    max-height: 200px;
+    margin-right: 10px;
+  }
+
+  .btn-danger {
+    display: block;
+    margin-top: 10px;
+  }
+
+  input {
+    text-align: center;
+  }
+}
+
+.col-sm-12 {
+  margin-bottom: 10px;
+}

@@ -18,6 +18,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeService } from './recipes/recipe.service';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductListService } from './product-list/product.service';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { RecipeService } from './recipes/recipe.service';
     ShoppingEditComponent,
     DropdownDirective,
     RecipeStartComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    ProductListComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,7 @@ import { RecipeService } from './recipes/recipe.service';
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [RecipeService,ShoppingListService],
+  providers: [RecipeService,ShoppingListService,ProductListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
