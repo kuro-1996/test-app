@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Product } from '../product-list/product.model';
+import { isNgTemplate } from '@angular/compiler';
 
 @Injectable({providedIn:'root'})
 export class CartService {
@@ -16,7 +17,6 @@ export class CartService {
 
   setProductCarts(carts: Product[]) {
     this.productCart = carts;
-    console.log(this.productCart);
   }
 
   addProductCart(cart: Product) {
@@ -27,8 +27,12 @@ export class CartService {
   getSum() {
     let sum: number = 0;
     this.productCart.forEach((item) => {
+      if (isNaN(+item.price)) {
+        item.price = 0;
+      }
       sum += +item.price;
     })
+    
     return sum;
   }
 }

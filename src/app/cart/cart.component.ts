@@ -29,6 +29,7 @@ export class CartComponent implements OnInit {
   onDelete(index: number) {
     this.sum -= +this.productCarts[index].price * document.getElementsByTagName("input")[index].valueAsNumber;
     this.productCarts.splice(index, 1);
+    this.cartService.setProductCarts(this.productCarts);
   }
 
   onPlus(index: number) {
@@ -37,10 +38,20 @@ export class CartComponent implements OnInit {
   }
 
   onChange(index: number) {
-    if ( document.getElementsByTagName("input")[index].valueAsNumber === 0 || document.getElementsByTagName("input")[index].valueAsNumber === NaN ) {
+    console.log(document.getElementsByTagName("input")[index].valueAsNumber);
+    console.log(this.oldInputValue[index]);
+    
+    
+    if ( document.getElementsByTagName("input")[index].valueAsNumber === 0) {
       this.sum -= +this.productCarts[index].price * (this.oldInputValue[index] - document.getElementsByTagName("input")[index].valueAsNumber);
       this.productCarts.splice(index, 1);
     }   
+
+    if (isNaN(document.getElementsByTagName("input")[index].valueAsNumber)) {
+      document.getElementsByTagName("input")[index].valueAsNumber = 0;
+      this.sum -= +this.productCarts[index].price * (this.oldInputValue[index] - 0);
+      this.productCarts.splice(index, 1);
+    }
 
     if (document.getElementsByTagName("input")[index].valueAsNumber > this.oldInputValue[index]) {
       this.sum += +this.productCarts[index].price * (document.getElementsByTagName("input")[index].valueAsNumber - this.oldInputValue[index]);
