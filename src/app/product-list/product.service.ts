@@ -21,6 +21,10 @@ export class ProductListService {
     return this.http.get<Product[]>('https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products')
   }
 
+  getProducts() {
+    return this.products.slice()
+  }
+
   getProduct(index: number) {
     this.cartIndex = index;
     return this.products[index];

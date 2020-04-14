@@ -1,14 +1,45 @@
 <div class="row">
-  <div class="col-sm-12" style="display: flex; flex-flow: wrap; justify-content: space-between;">
-    <p *ngIf="isFetching">Loading...</p>
-    <div class="card" *ngFor="let product of products; let i=index">
-      <img [src]="product.image" alt="product image" class="card-img-top">
-      <div class="card-body">
-        <h5 class="card-title">{{ product.name }}</h5>
-        <p class="card-text">{{ product.createdAt | date }}</p>
-        <p class="card-text">price: {{ product.price }} $</p>
-        <button class="btn btn-primary" (click)="onAddToCart(i)">Add to cart</button>
+  <div class="col-sm-12">
+    <form [formGroup]="productForm">
+      <div class="form-group">
+        <input type="text" placeholder="search" [(ngModel)]="searchInput" [ngModelOptions]="{standalone: true}">
+        <button (click)="onSearch()">Search</button>
       </div>
-    </div>
+      <div class="form-group">
+        <label>Price</label>
+        <select formControlName="price" (change)="onSelectPrice()">
+          <option value="">Please choose</option>
+          <option *ngFor="let priceOption of priceOptions" [ngValue]="priceOption">{{ priceOption }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>date</label>
+        <select formControlName="date" (change)="onSelectDate()">
+          <option value="">Please choose</option>
+          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOption">{{ dateOption }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>publish from</label>
+        <select formControlName="publishFrom" (change)="onSelectPublishFrom()">
+          <option value="">Please choose</option>
+          <option *ngFor="let publishFromOption of publishFromOptions" [ngValue]="publishFromOption">{{ publishFromOption }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>publish to</label>
+        <select name="publishTo">
+          <option value="">Please choose</option>
+          <option value="otl">oldest to latest</option>
+          <option value="lto">latest to oldest</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <router-outlet></router-outlet>
+  <div class="col-sm-12">
+    <ul class="pagination justify-content-end">
+      <li *ngFor="let page of pages; let i = index" class="page-item"><a routerLinkActive="active" [routerLink]="i+1" class="page-link">{{i+1}}</a></li>
+    </ul>
   </div>
 </div>

@@ -1,0 +1,16 @@
+.card {
+  display: flex; 
+  flex-flow: column; 
+  width: calc(100% / 4 - 10px); 
+  margin-bottom: 10px;
+  
+  .card-img-top {
+    height: 200px; 
+    display: block;
+  }
+
+  .card-body {
+    border: 1px solid #ccc; 
+    padding: 10px;
+  }
+}
