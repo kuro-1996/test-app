@@ -21,22 +21,20 @@ export class CartService {
 
   addProductCart(cart: Product) {
     let same = false;
-    if ( this.productCart.length === 0 ) {
-      this.productCart.push(cart);
-    } else {
-      for(let i = 0; i < this.productCart.length; i++) { 
-        if (isNaN(this.productCart[i].quantity)) {
-          this.productCart[i].quantity = 1;
-        }
-        if ( cart.id === this.productCart[i].id ) {
-          this.productCart[i].quantity += 1;
-          same = true;
-        } 
+    
+    for(let i = 0; i < this.productCart.length; i++) { 
+      if (isNaN(this.productCart[i].quantity)) {
+        this.productCart[i].quantity = 1;
       }
-      if ( same === false ) {
-        this.productCart.push(cart);
-      }
+      if ( cart.id === this.productCart[i].id ) {
+        this.productCart[i].quantity += 1;
+        same = true;
+      }    
     }
+
+    if ( same === false ) {
+      this.productCart.push(cart);
+    } 
      //push ingrenent to this.ingredients
     this.productCartsChanged.next(this.productCart.slice()); //add the copy of ingredients to ingredientsChanged event's data
   }

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnChanges } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Product } from "./product.model";
-import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ProductListService } from "./product.service";
 import { FormBuilder } from "@angular/forms";
 
+import {NgxPaginationModule} from 'ngx-pagination';
 @Component({
   selector: "app-product-list",
   templateUrl: "./product-list.component.html",
@@ -11,84 +11,107 @@ import { FormBuilder } from "@angular/forms";
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  productsClone: Product[] = [];
   isFetching = false;
+  isNothingFound = false;
   searchInput: string;
-  pages: number[] = [];
+  config: any;
   productForm = this.fb.group({
+    input: [""],
     price: [""],
     date: [""],
     publishFrom: [""],
     publishTo: [""],
+    type: [""]
   });
   priceOptions = ["lowest to highest", "highest to lowest"];
   dateOptions = [ "latest to oldest","oldest to latest"];
   publishFromOptions = ["latest to oldest","oldest to latest"];
   publishToOptions = ["latest to oldest","oldest to latest"];
+  typeOptions = 
+  ["Chair",
+  "Shirt",
+  "Ball",
+  "Chicken",
+  "Table",
+  "Hat",
+  "Keyboard",
+  "Shoes",
+  "Mouse",
+  "Gloves",
+  "Bike",
+  "Bacon",
+  "Salad",
+  "Pants",
+  "Computer",
+  "Fish",
+  "Car",
+  "Towel",
+  "Cheese",
+  "Tuna",
+  "Soap",
+  "Pizza"]
 
   constructor(
     private productService: ProductListService,
-    private fb: FormBuilder 
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
     this.isFetching = true;
     this.productService.fetchProduct().subscribe((products) => {
       this.products = products;
+      this.productsClone = this.products.slice(); 
       this.isFetching = false;
-      this.pages = this.getArrayOfPage(this.getPageCount());
+      console.log(this.productsClone);
     });
-    // this.route.params.subscribe((params: Params) => {
-    //   this.id = +params["id"];
-    // })   
-  }
-
-  // ngOnChanges() {
-  //   this.pages = this.getArrayOfPage(this.getPageCount());
-  //   console.log(this.pages);
+    this.config = {
+      itemsPerPage: 20,
+      currentPage: 1,
+      totalItems: this.productsClone.length
+    };
     
-  // }
-
-  private  getPageCount(): number {  
-    let totalPage:number = 0;  
-      
-    totalPage =  this.products.length / 20;
-     
-    return totalPage;  
-  }  
-
-  private getArrayOfPage(pageCount : number) {  
-    let pageArray : number [] = [];  
-
-    if(pageCount > 0){  
-      for(var i=1 ; i<= pageCount ; i++){  
-        pageArray.push(i);  
-      }  
-    } 
-
-    return pageArray;  
-  }  
+    
+  }
 
   onSelectPrice() {
     if (this.productForm.get("price").value === "lowest to highest") {
-      this.products.sort(this.compareValues("price"));
+      this.productsClone.sort(this.compareValues("price"));
     } else {
-      this.products.sort(this.compareValues("price", "desc"));
+      this.productsClone.sort(this.compareValues("price", "desc"));
     }
   }
 
   onSelectDate() {
     if (this.productForm.get("date").value === "latest to oldest") {
-      this.products.sort(this.compareDate('createdAt','desc'));
+      this.productsClone.sort(this.compareDate('createdAt','desc'));
     } else {
-      this.products.sort(this.compareDate('createdAt'));
+      this.productsClone.sort(this.compareDate('createdAt'));
     }
   }
 
   onSelectPublishFrom() {
     if (this.productForm.get("publishFrom").value === "latest to oldest") {
-      this.products.sort(this.compareDate('publish_from','desc'));
+      this.productsClone.sort(this.compareDate('publish_from','desc'));
     } else {
-      this.products.sort(this.compareDate('publish_from'));
+      this.productsClone.sort(this.compareDate('publish_from'));
+    }
+  }
+
+  onSelectPublishTo() {
+    if (this.productForm.get("publishTo").value === "latest to oldest") {
+      this.productsClone.sort(this.compareDate('publish_to','desc'));
+    } else {
+      this.productsClone.sort(this.compareDate('publish_to'));
+    }
+  }
+
+  onSelectType() {
+    this.productsClone = this.products.filter((item) => {return item.type === this.productForm.get("type").value});  
+    this.config = {
+      itemsPerPage: 20,
+      currentPage: 1,
+      totalItems: this.productsClone.length
     }
   }
 
@@ -132,5 +155,33 @@ export class ProductListComponent implements OnInit {
     };
   }
 
-  onSearch() {}
+  onSearch() {
+    this.searchInput = this.productForm.get('input').value;
+    let Clone = this.products.filter((item) => {return item.name.toUpperCase().includes(this.searchInput.toUpperCase())});
+    if (Clone.length === 0) {
+      this.productsClone = [];
+      this.config = {
+        itemsPerPage: 20,
+        currentPage: 1,
+        totalItems: this.productsClone.length
+      }
+      this.isNothingFound = true;
+    }
+    if (Clone.length !== 0) {
+      this.productsClone = Clone;
+      
+    }
+    if (this.searchInput === null) {
+      this.productsClone = this.products;
+      this.isNothingFound = false;
+    }  
+  }
+  
+  onAddToCart(index: number) {
+    this.productService.addProductToCart(this.productsClone[index]);
+  }
+
+  pageChanged(event){
+    this.config.currentPage = event;
+  }
 }

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 import { AppComponent } from './app.component';
@@ -21,7 +22,6 @@ import { RecipeService } from './recipes/recipe.service';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductListService } from './product-list/product.service';
 import { CartComponent } from './cart/cart.component';
-import { ProductPageComponent } from './product-page/product-page.component';
 
 @NgModule({
   declarations: [
@@ -37,15 +37,15 @@ import { ProductPageComponent } from './product-page/product-page.component';
     RecipeStartComponent,
     RecipeEditComponent,
     ProductListComponent,
-    CartComponent,
-    ProductPageComponent
+    CartComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxPaginationModule
   ],
   providers: [RecipeService,ShoppingListService,ProductListService],
   bootstrap: [AppComponent]
