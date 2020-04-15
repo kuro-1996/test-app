@@ -82,28 +82,25 @@ export class ProductListComponent implements OnInit {
 
   onSelectDate() {
     if (this.productForm.get("date").value === "latest to oldest") {
-      this.productsClone.sort(this.compareDate('createdAt','desc'));
+      this.productsClone.sort(this.compareValues('createdAt','desc'));
     } else {
-      this.productsClone.sort(this.compareDate('createdAt'));
+      this.productsClone.sort(this.compareValues('createdAt'));
     }
   }
 
   onSelectPublishFrom() {
     if (this.productForm.get("publishFrom").value === "latest to oldest") {
-      this.productsClone.sort(this.compareDate('publish_from','desc'));
+      this.productsClone.sort(this.compareValues('publish_from','desc'));
     } else {
-      this.productsClone.sort(this.compareDate('publish_from'));
+      this.productsClone.sort(this.compareValues('publish_from'));
     }
-    this.productForm.get("publishFrom").value instanceof Date? console.log('date') : console.log('not date');
-    ;
-    
   }
 
   onSelectPublishTo() {
     if (this.productForm.get("publishTo").value === "latest to oldest") {
-      this.productsClone.sort(this.compareDate('publish_to','desc'));
+      this.productsClone.sort(this.compareValues('publish_to','desc'));
     } else {
-      this.productsClone.sort(this.compareDate('publish_to'));
+      this.productsClone.sort(this.compareValues('publish_to'));
     }
   }
 
@@ -122,27 +119,8 @@ export class ProductListComponent implements OnInit {
         return 0;
       }
 
-      const varA = +a[key];
-      const varB = +b[key];
-
-      let comparison = 0;
-      if (varA > varB) {
-        comparison = 1;
-      } else if (varA < varB) {
-        comparison = -1;
-      }
-      return order == "desc" ? comparison * -1 : comparison;
-    };
-  }
-
-  compareDate(key, order = "ins") {
-    return function (a, b) {
-      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        return 0;
-      }
-
-      const varA = new Date(a[key]).getTime();
-      const varB = new Date(b[key]).getTime();
+      const varA = !isNaN(Date.parse(a[key])) ? new Date(a[key]).getTime() : +a[key];
+      const varB = !isNaN(Date.parse(b[key])) ? new Date(b[key]).getTime() : +b[key];
 
       let comparison = 0;
       if (varA > varB) {
