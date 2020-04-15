@@ -28,29 +28,7 @@ export class ProductListComponent implements OnInit {
   dateOptions = [ "latest to oldest","oldest to latest"];
   publishFromOptions = ["latest to oldest","oldest to latest"];
   publishToOptions = ["latest to oldest","oldest to latest"];
-  typeOptions = 
-  ["Chair",
-  "Shirt",
-  "Ball",
-  "Chicken",
-  "Table",
-  "Hat",
-  "Keyboard",
-  "Shoes",
-  "Mouse",
-  "Gloves",
-  "Bike",
-  "Bacon",
-  "Salad",
-  "Pants",
-  "Computer",
-  "Fish",
-  "Car",
-  "Towel",
-  "Cheese",
-  "Tuna",
-  "Soap",
-  "Pizza"]
+  typeOptions = []
 
   constructor(
     private productService: ProductListService,
@@ -59,12 +37,19 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isFetching = true;
+
     this.productService.fetchProduct().subscribe((products) => {
       this.products = products;
       this.productsClone = this.products.slice(); 
-      this.isFetching = false;
-      console.log(this.productsClone);
+      this.isFetching = false;    
+      this.productsClone.forEach((item) => {
+        this.typeOptions.push(item.type);
+      })
+      this.typeOptions = this.typeOptions.filter(function(el,index,self){
+        return index === self.indexOf(el);
+      })
     });
+
     this.config = {
       itemsPerPage: 20,
       currentPage: 1,
@@ -106,11 +91,6 @@ export class ProductListComponent implements OnInit {
 
   onSelectType() {
     this.productsClone = this.products.filter((item) => {return item.type === this.productForm.get("type").value});  
-    this.config = {
-      itemsPerPage: 20,
-      currentPage: 1,
-      totalItems: this.productsClone.length
-    }
   }
 
   compareValues(key, order = "asc") {
@@ -128,27 +108,26 @@ export class ProductListComponent implements OnInit {
       } else if (varA < varB) {
         comparison = -1;
       }
+
       return order == "desc" ? comparison * -1 : comparison;
     };
   }
 
   onSearch() {
     this.searchInput = this.productForm.get('input').value;
+  
     let Clone = this.products.filter((item) => {return item.name.toUpperCase().includes(this.searchInput.toUpperCase())});
+
     if (Clone.length === 0) {
       this.productsClone = [];
-      this.config = {
-        itemsPerPage: 20,
-        currentPage: 1,
-        totalItems: this.productsClone.length
-      }
       this.isNothingFound = true;
     }
+
     if (Clone.length !== 0) {
       this.productsClone = Clone;
-      
     }
-    if (this.searchInput === null) {
+
+    if (this.searchInput === '') {
       this.productsClone = this.products;
       this.isNothingFound = false;
     }  
