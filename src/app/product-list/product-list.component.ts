@@ -70,8 +70,6 @@ export class ProductListComponent implements OnInit {
       currentPage: 1,
       totalItems: this.productsClone.length
     };
-    
-    
   }
 
   onSelectPrice() {
@@ -96,6 +94,9 @@ export class ProductListComponent implements OnInit {
     } else {
       this.productsClone.sort(this.compareDate('publish_from'));
     }
+    this.productForm.get("publishFrom").value instanceof Date? console.log('date') : console.log('not date');
+    ;
+    
   }
 
   onSelectPublishTo() {
@@ -118,12 +119,11 @@ export class ProductListComponent implements OnInit {
   compareValues(key, order = "asc") {
     return function (a, b) {
       if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        // không tồn tại tính chất trên cả hai object
         return 0;
       }
 
-      const varA = a[key] instanceof Date ? a[key] : +a[key];
-      const varB = b[key] instanceof Date ? b[key] : +b[key];
+      const varA = +a[key];
+      const varB = +b[key];
 
       let comparison = 0;
       if (varA > varB) {
@@ -138,12 +138,11 @@ export class ProductListComponent implements OnInit {
   compareDate(key, order = "ins") {
     return function (a, b) {
       if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-        // không tồn tại tính chất trên cả hai object
         return 0;
       }
 
-      const varA = new Date(a.createdAt).getTime();
-      const varB = new Date(b.createdAt).getTime();
+      const varA = new Date(a[key]).getTime();
+      const varB = new Date(b[key]).getTime();
 
       let comparison = 0;
       if (varA > varB) {
