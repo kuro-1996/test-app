@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -11,12 +9,13 @@ import { Router } from '@angular/router';
 })
 
 export class AuthComponent {
-  isLoginMode = true;
-
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
   }
 
-  onSubmit(form) {
-
+  onLogIn(formAuth: NgForm) {
+    if(formAuth.value.username === 'admin' && formAuth.value.password === '1111' ) {
+      this.authService.logIn();
+    }
+    formAuth.reset();
   }
 }

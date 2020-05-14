@@ -3,7 +3,8 @@ import { Product } from "./product.model";
 import { ProductListService } from "./product.service";
 import { FormBuilder } from "@angular/forms";
 
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from "ngx-pagination";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-product-list",
   templateUrl: "./product-list.component.html",
@@ -11,49 +12,66 @@ import {NgxPaginationModule} from 'ngx-pagination';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+
   productsClone: Product[] = [];
+
   isFetching = false;
+
   isNothingFound = false;
+
   searchInput: string;
+
   config: any;
+
   productForm = this.fb.group({
     input: [""],
     price: [""],
     date: [""],
     publishFrom: [""],
     publishTo: [""],
-    type: [""]
+    type: [""],
   });
+
   priceOptions = ["lowest to highest", "highest to lowest"];
-  dateOptions = [ "latest to oldest","oldest to latest"];
-  publishFromOptions = ["latest to oldest","oldest to latest"];
-  publishToOptions = ["latest to oldest","oldest to latest"];
-  typeOptions = []
+
+  dateOptions = ["latest to oldest", "oldest to latest"];
+
+  typeOptions = [];
 
   constructor(
     private productService: ProductListService,
     private fb: FormBuilder,
+    private router: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.isFetching = true;
-
-    this.productService.fetchProduct().subscribe((products) => {
-      this.products = products;
-      this.productsClone = this.products.slice(); 
-      this.isFetching = false;    
-      this.productsClone.forEach((item) => {
-        this.typeOptions.push(item.type);
-      })
-      this.typeOptions = this.typeOptions.filter(function(el,index,self){
-        return index === self.indexOf(el);
-      })
-    });
+    const relsove = this.router.snapshot.data;
+    this.products = relsove.prlist;
+    this.productsClone = this.products.slice();
+    this.isFetching = false;
+    this.productsClone.forEach((item) => {
+      this.typeOptions.push(item.type);
+    })
+    this.typeOptions = this.typeOptions.filter(function(el,index,self){
+      return index === self.indexOf(el);
+    })
+    // this.productService.fetchProduct().subscribe((products) => {
+    //   this.products = products;
+    //   this.productsClone = this.products.slice();
+    //   this.isFetching = false;
+    //   this.productsClone.forEach((item) => {
+    //     this.typeOptions.push(item.type);
+    //   })
+    //   this.typeOptions = this.typeOptions.filter(function(el,index,self){
+    //     return index === self.indexOf(el);
+    //   })
+    // });
 
     this.config = {
       itemsPerPage: 20,
       currentPage: 1,
-      totalItems: this.productsClone.length
+      totalItems: this.productsClone.length,
     };
   }
 
@@ -67,30 +85,39 @@ export class ProductListComponent implements OnInit {
 
   onSelectDate() {
     if (this.productForm.get("date").value === "latest to oldest") {
-      this.productsClone.sort(this.compareValues('createdAt','desc'));
+      this.productsClone.sort(this.compareValues("createdAt", "desc"));
     } else {
-      this.productsClone.sort(this.compareValues('createdAt'));
+      this.productsClone.sort(this.compareValues("createdAt"));
     }
   }
 
   onSelectPublishFrom() {
     if (this.productForm.get("publishFrom").value === "latest to oldest") {
-      this.productsClone.sort(this.compareValues('publish_from','desc'));
+      this.productsClone.sort(this.compareValues("publish_from", "desc"));
     } else {
-      this.productsClone.sort(this.compareValues('publish_from'));
+      this.productsClone.sort(this.compareValues("publish_from"));
     }
   }
 
   onSelectPublishTo() {
     if (this.productForm.get("publishTo").value === "latest to oldest") {
-      this.productsClone.sort(this.compareValues('publish_to','desc'));
+      this.productsClone.sort(this.compareValues("publish_to", "desc"));
     } else {
-      this.productsClone.sort(this.compareValues('publish_to'));
+      this.productsClone.sort(this.compareValues("publish_to"));
     }
   }
 
   onSelectType() {
-    this.productsClone = this.products.filter((item) => {return item.type === this.productForm.get("type").value});  
+    this.productsClone = this.products.filter((item) => {
+      return item.type === this.productForm.get("type").value;
+    });
+    
+    if (this.productForm.get('type').value === "") {
+      this.productsClone = this.products;
+      this.config.totalItems = this.productsClone.length;
+    } else {
+      this.config.totalItems = this.productsClone.length;
+    }
   }
 
   compareValues(key, order = "asc") {
@@ -99,8 +126,12 @@ export class ProductListComponent implements OnInit {
         return 0;
       }
 
-      const varA = !isNaN(Date.parse(a[key])) ? new Date(a[key]).getTime() : +a[key];
-      const varB = !isNaN(Date.parse(b[key])) ? new Date(b[key]).getTime() : +b[key];
+      const varA = !isNaN(Date.parse(a[key]))
+        ? new Date(a[key]).getTime()
+        : +a[key];
+      const varB = !isNaN(Date.parse(b[key]))
+        ? new Date(b[key]).getTime()
+        : +b[key];
 
       let comparison = 0;
       if (varA > varB) {
@@ -114,9 +145,11 @@ export class ProductListComponent implements OnInit {
   }
 
   onSearch() {
-    this.searchInput = this.productForm.get('input').value;
-  
-    let Clone = this.products.filter((item) => {return item.name.toUpperCase().includes(this.searchInput.toUpperCase())});
+    this.searchInput = this.productForm.get("input").value;
+
+    let Clone = this.products.filter((item) => {
+      return item.name.toUpperCase().includes(this.searchInput.toUpperCase());
+    });
 
     if (Clone.length === 0) {
       this.productsClone = [];
@@ -127,17 +160,19 @@ export class ProductListComponent implements OnInit {
       this.productsClone = Clone;
     }
 
-    if (this.searchInput === '') {
+    if (this.searchInput === "") {
       this.productsClone = this.products;
       this.isNothingFound = false;
-    }  
+    }
+
+    this.config.totalItems = this.productsClone.length;
   }
-  
+
   onAddToCart(index: number) {
     this.productService.addProductToCart(this.productsClone[index]);
   }
 
-  pageChanged(event){
+  pageChanged(event) {
     this.config.currentPage = event;
   }
 }

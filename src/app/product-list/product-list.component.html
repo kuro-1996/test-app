@@ -23,14 +23,14 @@
         <label>publish from</label>
         <select formControlName="publishFrom" (change)="onSelectPublishFrom()">
           <option value="">Please choose</option>
-          <option *ngFor="let publishFromOption of publishFromOptions" [ngValue]="publishFromOption">{{ publishFromOption }}</option>
+          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOption">{{ dateOption }}</option>
         </select>
       </div>
       <div class="form-group">
         <label>publish to</label>
         <select formControlName="publishTo" (change)="onSelectPublishTo()">
           <option value="">Please choose</option>
-          <option *ngFor="let publishToOption of publishToOptions" [ngValue]="publishToOption">{{ publishToOption }}</option>
+          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOptions">{{ dateOption }}</option>
         </select>
       </div>
       <div class="form-group">

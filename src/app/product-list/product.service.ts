@@ -1,28 +1,35 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Product } from './product.model';
-import { CartService } from '../cart/cart.service';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Product } from "./product.model";
+import { CartService } from "../cart/cart.service";
+import { Resolve } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-@Injectable({providedIn: 'root'})
-export class ProductListService {
+@Injectable({ providedIn: "root" })
+export class ProductListService implements Resolve<any> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.fetchProduct();
+  }
+
   private products: Product[] = [];
   cartIndex: number;
 
   constructor(private http: HttpClient, private cartService: CartService) {}
 
   storeProduct() {
-    this.http.put('https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products', this.products)
-    .subscribe(Response => {
-      console.log(Response);
-    })
+    this.http
+      .put("https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products",this.products)
+      .subscribe((Response) => {
+        console.log(Response);
+      });
   }
 
   fetchProduct() {
-    return this.http.get<Product[]>('https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products')
+    return this.http.get<Product[]>("https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products");
   }
 
   getProducts() {
-    return this.products.slice()
+    return this.products.slice();
   }
 
   getProduct(index: number) {

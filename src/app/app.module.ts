@@ -23,6 +23,8 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductListService } from './product-list/product.service';
 import { CartComponent } from './cart/cart.component';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth-guard.service';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,7 @@ import { AuthComponent } from './auth/auth.component';
     AppRoutingModule,
     NgxPaginationModule
   ],
-  providers: [RecipeService,ShoppingListService,ProductListService],
+  providers: [RecipeService,ShoppingListService,ProductListService, AuthService , AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

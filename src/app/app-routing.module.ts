@@ -9,6 +9,8 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { ProductListComponent } from './product-list/product-list.component';
 import { CartComponent } from './cart/cart.component';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth-guard.service';
+import { ProductListService } from './product-list/product.service';
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "/auth", pathMatch: "full" }, //redirect blank space to /recipes
@@ -21,7 +23,7 @@ const appRoutes: Routes = [
                { path: ":id/edit", component: RecipeEditComponent }]
   },
   { path: "shopping-list", component: ShoppingListComponent },
-  { path: "product-list", component: ProductListComponent},
+  { path: "product-list",canActivate: [AuthGuard],component: ProductListComponent, resolve: {prlist: ProductListService}},
   { path: "cart", component: CartComponent },
   { path: "auth", component: AuthComponent }
 ];
