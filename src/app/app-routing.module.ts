@@ -8,9 +8,10 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { CartComponent } from './cart/cart.component';
+import { AuthComponent } from './auth/auth.component';
 
 const appRoutes: Routes = [
-  { path: "", redirectTo: "/recipes", pathMatch: "full" }, //redirect blank space to /recipes
+  { path: "", redirectTo: "/auth", pathMatch: "full" }, //redirect blank space to /recipes
   {
     path: "recipes",
     component: RecipesComponent,
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
   },
   { path: "shopping-list", component: ShoppingListComponent },
   { path: "product-list", component: ProductListComponent},
-  { path: "cart", component: CartComponent }
+  { path: "cart", component: CartComponent },
+  { path: "auth", component: AuthComponent }
 ];
 
 @NgModule({

@@ -22,6 +22,7 @@ import { RecipeService } from './recipes/recipe.service';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductListService } from './product-list/product.service';
 import { CartComponent } from './cart/cart.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { CartComponent } from './cart/cart.component';
     RecipeStartComponent,
     RecipeEditComponent,
     ProductListComponent,
-    CartComponent
+    CartComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
