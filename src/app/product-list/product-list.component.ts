@@ -45,11 +45,10 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isFetching = true;
     const relsove = this.router.snapshot.data;
     this.products = relsove.prlist;
     this.productsClone = this.products.slice();
-    this.isFetching = false;
+   
     this.productsClone.forEach((item) => {
       this.typeOptions.push(item.type);
     })
