@@ -1,0 +1,15 @@
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  width: 260px;
+
+  label {
+    margin-right: 10px;
+  }
+}
+
+form {
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: fit-content;
+}
