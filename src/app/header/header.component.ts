@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   constructor(private dataStorageService: DataStorageService, private authService: AuthService, private router: Router) {}
+
   onSaveData() {
     this.dataStorageService.storeRecipes();
   }

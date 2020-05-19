@@ -1,16 +1,8 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy 
-} from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { Ingredient } from "../../shared/ingredient.model";
 import { ShoppingListService } from "../shopping-list.service";
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from "@angular/forms";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -37,15 +29,16 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       this.editMode = true; //turn editMode on
 
       this.editedItem = this.slService.getIngredient(index); //pass shopping-list.service's ingredients[index] value into this.editedItem
-      this.editForm.get('name').setValue(this.editedItem.name);
-      this.editForm.get('amount').setValue(this.editedItem.amount)
+      this.editForm.get("name").setValue(this.editedItem.name);
+      this.editForm.get("amount").setValue(this.editedItem.amount);
     });
   }
 
   onSubmit() {
     const newIngredient = new Ingredient(
-      this.editForm.controls['name'].value,
-      this.editForm.controls['amount'].value);
+      this.editForm.controls["name"].value,
+      this.editForm.controls["amount"].value
+    );
 
     if (this.editMode) {
       this.slService.updateIngredient(this.editedItemIndex, newIngredient);
@@ -71,8 +64,8 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   createEditForm(): FormGroup {
     return this.fb.group({
-      name: ["",[Validators.required]],
-      amount: ["",[Validators.required,Validators.pattern(/^[1-9]+[0-9]*$/)]],
+      name: ["", [Validators.required]],
+      amount: ["", [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]],
     });
   }
 }

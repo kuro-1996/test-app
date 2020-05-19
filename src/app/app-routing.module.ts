@@ -11,6 +11,7 @@ import { CartComponent } from './cart/cart.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth-guard.service';
 import { ProductListService } from './product-list/product.service';
+// import { ProductEditComponent } from './product-list/product-edit/product-edit.component';
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "/auth", pathMatch: "full" }, //redirect blank space to /recipes
@@ -23,7 +24,12 @@ const appRoutes: Routes = [
                { path: ":id/edit", component: RecipeEditComponent }]
   },
   { path: "shopping-list", component: ShoppingListComponent },
-  { path: "product-list",canActivate: [AuthGuard],component: ProductListComponent, resolve: {prlist: ProductListService}},
+  { 
+    path: "product-list",
+    component: ProductListComponent, 
+    // children: [{path: "edit", component: ProductEditComponent}],
+    canActivate: [AuthGuard],
+    resolve: {prlist: ProductListService}},
   { path: "cart", component: CartComponent },
   { path: "auth", component: AuthComponent }
 ];
@@ -33,3 +39,5 @@ const appRoutes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+
+// ,canActivate: [AuthGuard]

@@ -17,9 +17,9 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    this.http.get<Recipe[]>('https://ng-complete-guide-465a8.firebaseio.com/recipes.json').subscribe(
-      recipes => {
-        this.recipeService.setRecipes(recipes);
-    })
+    // this.http.get<Recipe[]>('https://ng-complete-guide-465a8.firebaseio.com/recipes.json').subscribe(
+    //   recipes => {
+    //     this.recipeService.setRecipes(recipes);
+    // })
   }
 }

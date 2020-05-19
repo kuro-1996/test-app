@@ -4,6 +4,9 @@
   width: calc(100% / 4 - 10px); 
   margin-bottom: 10px;
   margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc; 
+  overflow: hidden;
   
   .card-img-top {
     height: 200px; 
@@ -11,12 +14,76 @@
   }
 
   .card-body {
-    border: 1px solid #ccc; 
     padding: 10px;
+
+    .btn-danger, .btn-warning {
+      margin-bottom: 10px;
+      margin-right: 10px;
+    }
   }
 }
+
+.col-sm-12 {
+  margin-bottom: 20px;
+
+  &.form-wrap {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  form {
+    margin-right: 20px;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
 .form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+
   label {
     margin-right: 10px;
+  }
+
+  select {
+    width: 150px;
+  }
+}
+
+form {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  
+
+  input {
+    width: 157px;
+    padding: 5px;
+    border-radius: 5px;
+    border-style: ridge;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  &.form-filter {
+    .form-group {
+      align-items: unset;
+    }
+
+    input {
+      border-radius: 5px 0 0 5px;
+      border-style: ridge;
+    }
+
+    button {
+      border-radius: 0 5px 5px 0;
+    }
   }
 }

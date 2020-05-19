@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
 import { CartService } from "./cart.service";
 import { Product } from "../product-list/product.model";
 import { Subscription } from "rxjs";
@@ -8,7 +8,7 @@ import { Subscription } from "rxjs";
   templateUrl: "./cart.component.html",
   styleUrls: ["./cart.component.scss"],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   productCarts: Product[] = [];
   cartSub: Subscription;
   sum: number = 0;
@@ -107,5 +107,9 @@ export class CartComponent implements OnInit {
     if (document.getElementsByTagName("input")[index].valueAsNumber === 0) {
       this.productCarts.splice(index, 1);
     }
+  }
+
+  ngOnDestroy () {
+    this.cartSub.unsubscribe();
   }
 }
