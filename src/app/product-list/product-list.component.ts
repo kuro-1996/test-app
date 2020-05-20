@@ -250,7 +250,7 @@ export class ProductListComponent implements OnInit {
         this.productsClone[
           index + (this.config.currentPage - 1) * this.config.itemsPerPage
         ].createdAt
-      ).calendar(),
+      ).format('YYYY-MM-DD'),
       name: this.productsClone[
         index + (this.config.currentPage - 1) * this.config.itemsPerPage
       ].name,
@@ -267,12 +267,12 @@ export class ProductListComponent implements OnInit {
         this.productsClone[
           index + (this.config.currentPage - 1) * this.config.itemsPerPage
         ].publish_from
-      ).calendar(),
+      ).format('YYYY-MM-DD'),
       publish_to: moment(
         this.productsClone[
           index + (this.config.currentPage - 1) * this.config.itemsPerPage
         ].publish_to
-      ).calendar(),
+      ).format('YYYY-MM-DD'),
     });
   }
 

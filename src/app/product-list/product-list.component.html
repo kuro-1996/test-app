@@ -89,7 +89,7 @@
       </div>
       <div class="form-group">
         <label for="prCreate">Create At</label>
-        <input type="da" formControlName="createdAt" id="prCreate">
+        <input type="date" formControlName="createdAt" id="prCreate">
       </div>
       <div class="form-group">
         <label for="prPrice">Price</label>
@@ -101,11 +101,11 @@
       </div>
       <div class="form-group">
         <label for="prPlf">Publish From</label>
-        <input type="text" formControlName="publish_from" id="prPlf">
+        <input type="date" formControlName="publish_from" id="prPlf">
       </div>
       <div class="form-group">
         <label for="prPlt">Publish To</label>
-        <input type="text" formControlName="publish_to" id="prPlt">
+        <input type="date" formControlName="publish_to" id="prPlt">
       </div>
       <button class="btn btn-success" type="submit" [disabled]="editProductForm.invalid">Update</button>
     </form>
