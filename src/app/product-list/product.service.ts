@@ -1,9 +1,12 @@
 import { Injectable, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { Resolve } from "@angular/router";
+import { Subject } from 'rxjs';
+
 import { Product } from "./product.model";
 import { CartService } from "../cart/cart.service";
-import { Resolve } from "@angular/router";
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { ApiService } from '../shared/API.service';
 
 @Injectable({ providedIn: "root" })
 export class ProductListService implements Resolve<any> {
@@ -11,85 +14,53 @@ export class ProductListService implements Resolve<any> {
     return this.fetchProduct();
   }
 
+  productChanged = new Subject<Product[]>();
+
+  typeOptionChange = new Subject<any>();
+
+  isEditChange = new Subject<boolean>();
+
+  configItem = new Subject<number>();
+
+  isTypeSelect = new Subject<boolean>();
+
   private products = [];
   cartIndex: number;
   productIndex: number;
   
-  constructor(private http: HttpClient, private cartService: CartService) {
+  constructor(private http: HttpClient, private cartService: CartService, private apiService: ApiService) {
   }
 
   storeProduct(product: Product) {
-    this.http
-      .post(
-        "https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products",
-        product
-      )
+    this.apiService.create('products', product)
       .subscribe((Response) => {
         console.log(Response);
       });
   }
 
   updateProduct(product: Product, id: number) {
-    const Url = 'https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products';
-    const UrlProductId = `${Url}/${id}`
-    this.http
-      .put(
-        UrlProductId,
-        product
-      )
+    this.apiService.update('products', product, id)
       .subscribe((Response) => {
         console.log(Response);
       });
   }
 
   deleteProduct(id: number) {
-    const Url = 'https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products';
-    const UrlProductId = `${Url}/${id}`
-    this.http
-      .delete(
-        UrlProductId
-      )
+    this.apiService.delete('products',id)
       .subscribe((Response) => {
         console.log(Response);
       });
   }
 
   fetchProduct() {
-    return this.http.get<Product[]>(
-      "https://5e8be58cbe5500001689eddb.mockapi.io/api/v1/products"
-    );
-  }
-
-  getProducts() {
-    this.fetchProduct().subscribe(products => {
-      this.products = products;
-    })
-
-    return this.products.slice();
+    return this.apiService.get('products');
   }
 
   setProducts(products: Product[]) {
     this.products = products;
   }
 
-  getProduct(index: number) {
-    this.fetchProduct().subscribe(products => {
-      this.products = products;
-    })
-    
-    this.cartIndex = index;
-    return this.products[index];
-  }
-
-  getCartIndexItem() {
-    return this.products[this.cartIndex];
-  }
-
   addProductToCart(product: Product) {
     this.cartService.addProductCart(product); // add ingredients into shopping-list.service
-  }
-
-  getProductIndex(index: number) {
-    return this.productIndex = index;
-  }  
+  } 
 }

@@ -6,10 +6,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { ProductListComponent } from './product-list.component';
 import { ProductListRoutingModule } from './product-list-routing.module';
+import { FormSelectComponent } from './form-select/form-select.component';
+import { ProductFormComponent } from './product-form/product-form.component';
 
 @NgModule({
   declarations: [
-    ProductListComponent
+    ProductListComponent,
+    FormSelectComponent,
+    ProductFormComponent
   ],
   imports: [
     FormsModule,

@@ -71,19 +71,24 @@ form {
   h3 {
     margin-top: 0;
   }
+}
 
-  &.form-filter {
-    .form-group {
-      align-items: unset;
-    }
+.form-filter {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 20px;
 
-    input {
-      border-radius: 5px 0 0 5px;
-      border-style: ridge;
-    }
+  .form-group {
+    align-items: unset;
+  }
 
-    button {
-      border-radius: 0 5px 5px 0;
-    }
+  input {
+    border-radius: 5px 0 0 5px;
+    border-style: ridge;
+  }
+
+  button {
+    border-radius: 0 5px 5px 0;
   }
 }

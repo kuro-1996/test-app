@@ -13,6 +13,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartSub: Subscription;
   sum: number = 0;
   oldInputValue: number[];
+  inputValue: number[];
 
   constructor(private cartService: CartService) {}
 
@@ -23,9 +24,16 @@ export class CartComponent implements OnInit, OnDestroy {
         this.productCarts = carts;
       }
     );
-    this.sum = this.cartService.getSum();
-    let oldInputValue = new Array(this.productCarts.length).fill(1);
-    this.oldInputValue = oldInputValue;
+
+    this.productCarts.forEach((item) => {
+      if (isNaN(item.quantity)) {
+        item.quantity = 1;
+      }
+      this.sum += +(item.price * item.quantity);
+    })
+  
+    this.oldInputValue = new Array(this.productCarts.length).fill(1);
+    this.inputValue = new Array(this.productCarts.length).fill(1);
   }
 
   ngAfterViewInit():void {
@@ -33,78 +41,55 @@ export class CartComponent implements OnInit, OnDestroy {
       if (isNaN(this.productCarts[i].quantity)) {
         this.productCarts[i].quantity = 1;
       }
-      document.getElementsByTagName("input")[
-        i
-      ].valueAsNumber = this.productCarts[i].quantity;
+      this.inputValue[i] = this.productCarts[i].quantity;
     }
   }
 
   onDelete(index: number) {
     this.sum -=
       +this.productCarts[index].price *
-      document.getElementsByTagName("input")[index].valueAsNumber;
+      this.inputValue[index];
     this.productCarts.splice(index, 1);
     this.cartService.setProductCarts(this.productCarts);
   }
 
   onPlus(index: number) {
     this.sum += +this.productCarts[index].price;
-    document.getElementsByTagName("input")[index].valueAsNumber += 1;
+    this.inputValue[index] += 1;
   }
 
   onChange(index: number) {
-    this.productCarts[index].quantity = document.getElementsByTagName("input")[
-      index
-    ].valueAsNumber;
+    this.productCarts[index].quantity = this.inputValue[index];
 
-    // if (document.getElementsByTagName("input")[index].valueAsNumber === NaN) {
-    //   document.getElementsByTagName("input")[index].valueAsNumber = 0;
-    // }
-
-    if (document.getElementsByTagName("input")[index].valueAsNumber === 0) {
+    if (this.inputValue[index] === 0) {
       this.sum -=
         +this.productCarts[index].price *
-        (this.oldInputValue[index] -
-          document.getElementsByTagName("input")[index].valueAsNumber);
+        (this.oldInputValue[index] -this.inputValue[index]);
       this.productCarts.splice(index, 1);
     }
 
-    // if (isNaN(document.getElementsByTagName("input")[index].valueAsNumber)) {
-    //   document.getElementsByTagName("input")[index].valueAsNumber = 0;
-    //   this.sum -= +this.productCarts[index].price * (this.oldInputValue[index] - 0);
-    //   this.productCarts.splice(index, 1);
-    // }
-
-    if (
-      document.getElementsByTagName("input")[index].valueAsNumber >
-      this.oldInputValue[index]
-    ) {
+    if (this.inputValue[index] > this.oldInputValue[index]) {
       this.sum +=
         +this.productCarts[index].price *
-        (document.getElementsByTagName("input")[index].valueAsNumber -
-          this.oldInputValue[index]);
+        (this.inputValue[index] - this.oldInputValue[index]);
     }
 
     if (
-      document.getElementsByTagName("input")[index].valueAsNumber <
-        this.oldInputValue[index] &&
-      document.getElementsByTagName("input")[index].valueAsNumber != 0
+      this.inputValue[index] < this.oldInputValue[index] &&
+      this.inputValue[index] != 0
     ) {
       this.sum -=
         +this.productCarts[index].price *
-        (this.oldInputValue[index] -
-          document.getElementsByTagName("input")[index].valueAsNumber);
+        (this.oldInputValue[index] - this.inputValue[index]);
     }
 
-    this.oldInputValue[index] = document.getElementsByTagName("input")[
-      index
-    ].valueAsNumber;
+    this.oldInputValue[index] = this.inputValue[index];
   }
 
   onMinus(index: number) {
-    document.getElementsByTagName("input")[index].valueAsNumber -= 1;
+    this.inputValue[index] -= 1;
     this.sum -= +this.productCarts[index].price;
-    if (document.getElementsByTagName("input")[index].valueAsNumber === 0) {
+    if (this.inputValue[index] === 0) {
       this.productCarts.splice(index, 1);
     }
   }

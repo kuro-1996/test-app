@@ -1,136 +1,64 @@
 <div class="row">
   <div class="col-sm-12 form-wrap">
-    <form [formGroup]="productForm" class="form-filter">
+    <div class="form-filter">
       <div class="form-group">
-        <input type="text" placeholder="search" formControlName="input" style="width: 100%;" (keyup)="onSearch()">
+        <input
+          type="text"
+          placeholder="search"
+          style="width: 100%;"
+          [(ngModel)]="searchInput"
+          (keyup)="onSearch()"
+        />
         <button (click)="onSearch()">Search</button>
       </div>
-      <div class="form-group">
-        <label>Price</label>
-        <select formControlName="price" (change)="onSelectPrice()">
-          <option value="">Please choose</option>
-          <option *ngFor="let priceOption of priceOptions" [ngValue]="priceOption">{{ priceOption }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>date</label>
-        <select formControlName="date" (change)="onSelectDate()">
-          <option value="">Please choose</option>
-          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOption">{{ dateOption }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>publish from</label>
-        <select formControlName="publishFrom" (change)="onSelectPublishFrom()">
-          <option value="">Please choose</option>
-          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOption">{{ dateOption }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>publish to</label>
-        <select formControlName="publishTo" (change)="onSelectPublishTo()">
-          <option value="">Please choose</option>
-          <option *ngFor="let dateOption of dateOptions" [ngValue]="dateOptions">{{ dateOption }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select formControlName="type" (change)="onSelectType()">
-          <option value="">Please choose</option>
-          <option *ngFor="let typeOption of typeOptions" [ngValue]="typeOption">{{ typeOption }}</option>
-        </select>
-      </div>
-    </form>
+      <app-form-select [Options]="priceOptions" [label]="'price'" [productProperty]="'price'"></app-form-select>
+      <app-form-select [Options]="dateOptions" [label]="'date'" [productProperty]="'createdAt'"></app-form-select>
+      <app-form-select [Options]="dateOptions" [label]="'publish from'" [productProperty]="'publish_from'"></app-form-select>
+      <app-form-select [Options]="dateOptions" [label]="'publish to'" [productProperty]="'publish_to'"></app-form-select>
+      <app-form-select [Options]="typeOptions" [label]="'type'" [productProperty]="'type'"></app-form-select>
+    </div>
 
-    <form [formGroup]="addProductForm" class="form-new-product" (ngSubmit)="onAddProduct()">
-      <h3>Add New Product</h3>
-     
-      <div class="form-group">
-        <label for="prName">Name</label>
-        <input type="text" formControlName="name" id="prName">
-      </div>
-      <div class="form-group">
-        <label for="prImg">Image URL</label>
-        <input type="text" formControlName="image" id="prImg">
-      </div>
-      <div class="form-group">
-        <label for="prCreate">Create At</label>
-        <input type="date" formControlName="createdAt" id="prCreate">
-      </div>
-      <div class="form-group">
-        <label for="prPrice">Price</label>
-        <input type="number" formControlName="price" id="prPrice">
-      </div>
-      <div class="form-group">
-        <label for="prType">Type</label>
-        <input type="text" formControlName="type" id="prType">
-      </div>
-      <div class="form-group">
-        <label for="prPlf">Publish From</label>
-        <input type="date" formControlName="publish_from" id="prPlf">
-      </div>
-      <div class="form-group">
-        <label for="prPlt">Publish To</label>
-        <input type="date" formControlName="publish_to" id="prPlt">
-      </div>
-      <button class="btn btn-success" type="submit" [disabled]="addProductForm.invalid">Add</button>
-    </form>
+    <app-product-form [Options]="typeOptions" [title]="'Add'"></app-product-form>
 
-    <form [formGroup]="editProductForm" class="form-edit-product" *ngIf="isEdit" (ngSubmit)="onEditUpdate()">
-      <h3>Edit Product</h3>
-      
-      <div class="form-group">
-        <label for="prName">Name</label>
-        <input type="text" formControlName="name" id="prName">
-      </div>
-      <div class="form-group">
-        <label for="prImg">Image URL</label>
-        <input type="text" formControlName="image" id="prImg">
-      </div>
-      <div class="form-group">
-        <label for="prCreate">Create At</label>
-        <input type="date" formControlName="createdAt" id="prCreate">
-      </div>
-      <div class="form-group">
-        <label for="prPrice">Price</label>
-        <input type="number" formControlName="price" id="prPrice">
-      </div>
-      <div class="form-group">
-        <label for="prType">Type</label>
-        <input type="text" formControlName="type" id="prType">
-      </div>
-      <div class="form-group">
-        <label for="prPlf">Publish From</label>
-        <input type="date" formControlName="publish_from" id="prPlf">
-      </div>
-      <div class="form-group">
-        <label for="prPlt">Publish To</label>
-        <input type="date" formControlName="publish_to" id="prPlt">
-      </div>
-      <button class="btn btn-success" type="submit" [disabled]="editProductForm.invalid">Update</button>
-    </form>
+    <app-product-form [Options]="typeOptions" [Product]="product" *ngIf="isEdit" [title]="'Update'" [checkEdit]="isEdit"></app-product-form>
   </div>
-  <div class="col-sm-12" style="display: flex; flex-flow: wrap; justify-content: space-between;">
-    <p *ngIf="isFetching">Loading...</p>
-    <p *ngIf="isNothingFound">No Product with name : '{{searchInput}}' is founded</p>
-    <div class="card" *ngFor="let product of productsClone | paginate: config; let i=index">
-      <img [src]="product.image" alt="product image" class="card-img-top">
+  <div
+    class="col-sm-12"
+    style="display: flex; flex-flow: wrap; justify-content: space-between;">
+    <p *ngIf="isNothingFound">
+      No Product with name : '{{ searchInput }}' is founded
+    </p>
+    <div
+      class="card"
+      *ngFor="let product of productsClone | paginate: config; let i = index"
+    >
+      <img [src]="product.image" alt="product image" class="card-img-top" />
 
       <div class="card-body">
         <h5 class="card-title">{{ product.name }}</h5>
         <p class="card-text">Created At : {{ product.createdAt | date }}</p>
-        <p class="card-text">Publish from : {{ product.publish_from | date }} </p>
+        <p class="card-text">
+          Publish from : {{ product.publish_from | date }}
+        </p>
         <p class="card-text">Publish to : {{ product.publish_to | date }}</p>
         <p class="card-text">Type : {{ product.type }}</p>
         <p class="card-text">price: {{ product.price }} $</p>
 
-        <button class="btn btn-warning" (click)="onEditProduct(i)">Edit Product</button>
-        <button class="btn btn-danger" (click)="onDeleteProduct(i)">Delete Product</button>
-        <button class="btn btn-primary" (click)="onAddToCart(i)">Add to cart</button>
+        <button class="btn btn-warning" (click)="onEditProduct(i)">
+          Edit Product
+        </button>
+        <button class="btn btn-danger" (click)="onDeleteProduct(i)">
+          Delete Product
+        </button>
+        <button class="btn btn-primary" (click)="onAddToCart(i)">
+          Add to cart
+        </button>
       </div>
     </div>
   </div>
   <div class="col-sm-12">
-    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    <pagination-controls
+      (pageChange)="pageChanged($event)"
+    ></pagination-controls>
   </div>
 </div>

@@ -5,15 +5,11 @@ const appRoutes: Routes = [
   { path: "", redirectTo: "/auth", pathMatch: "full" }, //redirect blank space to /recipe
   {
     path: "recipes",
-    loadChildren: () =>
-      import("./recipes/recipe.module").then((m) => m.RecipeModule),
+    loadChildren: () => import("./recipes/recipe.module").then((m) => m.RecipeModule),
   },
   {
     path: "shopping-list",
-    loadChildren: () =>
-      import("./shopping-list/shopping-list.module").then(
-        (m) => m.ShoppingListModule
-      ),
+    loadChildren: () => import("./shopping-list/shopping-list.module").then((m) => m.ShoppingListModule),
   },
   {
     path: "auth",
@@ -25,10 +21,7 @@ const appRoutes: Routes = [
   },
   {
     path: "product-list",
-    loadChildren: () =>
-      import("./product-list/product-list.module").then(
-        (m) => m.ProductListModule
-      ),
+    loadChildren: () => import("./product-list/product-list.module").then((m) => m.ProductListModule),
   },
 ];
 

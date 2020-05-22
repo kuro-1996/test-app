@@ -38,16 +38,4 @@ export class CartService {
      //push ingrenent to this.ingredients
     this.productCartsChanged.next(this.productCart.slice()); //add the copy of ingredients to ingredientsChanged event's data
   }
-
-  getSum() {
-    let sum: number = 0;
-    this.productCart.forEach((item) => {
-      if (isNaN(item.quantity)) {
-        item.quantity = 1;
-      }
-      sum += +(item.price * item.quantity);
-    })
-    
-    return sum;
-  }
 }

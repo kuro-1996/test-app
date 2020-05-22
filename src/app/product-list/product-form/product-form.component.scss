@@ -1,0 +1,33 @@
+form {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 20px;
+  
+
+  input {
+    width: 157px;
+    padding: 5px;
+    border-radius: 5px;
+    border-style: ridge;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+
+  label {
+    margin-right: 10px;
+  }
+
+  select {
+    width: 150px;
+  }
+}

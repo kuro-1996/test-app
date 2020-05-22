@@ -1,0 +1,14 @@
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+
+  label {
+    margin-right: 10px;
+  }
+
+  select {
+    width: 150px;
+  }
+}
