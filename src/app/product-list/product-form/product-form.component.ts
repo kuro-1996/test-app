@@ -87,7 +87,7 @@ export class ProductFormComponent implements OnInit {
         this.ProductForm.get("type").value,
         this.ProductForm.get("publish_from").value,
         this.ProductForm.get("publish_to").value,
-        0
+        0 
       );
   
       this.products.push(productChange);

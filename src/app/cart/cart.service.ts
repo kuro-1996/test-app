@@ -35,7 +35,7 @@ export class CartService {
     if ( same === false ) {
       this.productCart.push(cart);
     } 
-     //push ingrenent to this.ingredients
-    this.productCartsChanged.next(this.productCart.slice()); //add the copy of ingredients to ingredientsChanged event's data
+    
+    this.productCartsChanged.next(this.productCart.slice()); 
   }
 }

@@ -9,9 +9,9 @@ import { Subscription } from "rxjs";
   styleUrls: ["./cart.component.scss"],
 })
 export class CartComponent implements OnInit, OnDestroy {
-  productCarts: Product[] = [];
   cartSub: Subscription;
   sum: number = 0;
+  productCarts: Product[] = [];
   oldInputValue: number[];
   inputValue: number[];
 
@@ -34,9 +34,7 @@ export class CartComponent implements OnInit, OnDestroy {
   
     this.oldInputValue = new Array(this.productCarts.length).fill(1);
     this.inputValue = new Array(this.productCarts.length).fill(1);
-  }
 
-  ngAfterViewInit():void {
     for (let i = 0; i < this.productCarts.length; i++) {
       if (isNaN(this.productCarts[i].quantity)) {
         this.productCarts[i].quantity = 1;
@@ -55,7 +53,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onPlus(index: number) {
     this.sum += +this.productCarts[index].price;
+    this.productCarts[index].quantity += 1;
     this.inputValue[index] += 1;
+    this.cartService.setProductCarts(this.productCarts);
   }
 
   onChange(index: number) {
@@ -69,9 +69,9 @@ export class CartComponent implements OnInit, OnDestroy {
     }
 
     if (this.inputValue[index] > this.oldInputValue[index]) {
-      this.sum +=
-        +this.productCarts[index].price *
-        (this.inputValue[index] - this.oldInputValue[index]);
+      this.sum += 
+      +this.productCarts[index].price * 
+      (this.inputValue[index] - this.oldInputValue[index]);
     }
 
     if (
@@ -83,15 +83,18 @@ export class CartComponent implements OnInit, OnDestroy {
         (this.oldInputValue[index] - this.inputValue[index]);
     }
 
+    this.cartService.setProductCarts(this.productCarts);
     this.oldInputValue[index] = this.inputValue[index];
   }
 
   onMinus(index: number) {
     this.inputValue[index] -= 1;
     this.sum -= +this.productCarts[index].price;
+    this.productCarts[index].quantity -= 1;
     if (this.inputValue[index] === 0) {
       this.productCarts.splice(index, 1);
     }
+    this.cartService.setProductCarts(this.productCarts);
   }
 
   ngOnDestroy () {

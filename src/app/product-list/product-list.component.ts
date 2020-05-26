@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Product } from "./product.model";
 import { ProductListService } from "./product.service";
 
@@ -132,5 +132,13 @@ export class ProductListComponent implements OnInit {
     this.productIndex = index + (this.config.currentPage - 1) * this.config.itemsPerPage;
     this.product = this.productsClone[this.productIndex];
     this.productService.productIndex = index + (this.config.currentPage - 1) * this.config.itemsPerPage; 
+  }
+
+  ngOnDestroy() {
+    this.productSub.unsubscribe();
+    this.typeOptionSub.unsubscribe();
+    this.typeSelectSub.unsubscribe();
+    this.isEditSub.unsubscribe();
+    this.configItem.unsubscribe();
   }
 }

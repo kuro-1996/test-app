@@ -14,9 +14,7 @@ export class FormSelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService.get('products').subscribe((products: Product[]) => {
-      this.products = products;
-      console.log(this.products);
-      
+      this.products = products; 
     });
   }
 

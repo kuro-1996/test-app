@@ -11,7 +11,7 @@ const routes: Routes = [
   { 
     path: "",
     component: ProductListComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     resolve: {prlist: ProductListService}}
 ];
 
